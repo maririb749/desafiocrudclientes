@@ -1,15 +1,22 @@
 package com.mariana.crudclientes.dto;
 
 import com.mariana.crudclientes.entitie.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+
 
 import java.time.LocalDate;
 
 public class ClientDTO {
 
     private Long id;
+    @Size(min = 2 , max = 100, message = "Nome ter que ter de 2 a 100 caracteres")
+    @NotBlank(message = "Campo requerido")
     private String name;
     private String cpf;
     private Double income;
+    @PastOrPresent(message = "Data não pode ser futura")
     private LocalDate birthDate;
     private Integer children;
 

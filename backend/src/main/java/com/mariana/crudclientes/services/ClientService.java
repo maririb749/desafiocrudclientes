@@ -3,26 +3,35 @@ package com.mariana.crudclientes.services;
 import com.mariana.crudclientes.dto.ClientDTO;
 import com.mariana.crudclientes.entitie.Client;
 import com.mariana.crudclientes.repositories.ClientRepository;
+import com.mariana.crudclientes.services.exceptions.ResouceNotFounException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+
 import java.util.Optional;
+
 
 @Service
 public class ClientService {
     @Autowired
     private ClientRepository repository;
+
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id){
-        Optional<Client> result = repository.findById(id);
-        Client client = result.get();
-        ClientDTO dto = new ClientDTO(client);
-        return dto;
-    }
+            Optional<Client> result = repository.findById(id);
+            Client client = result.orElseThrow(
+                    ()-> new ResouceNotFounException("Não existe o cliente"));
+            ClientDTO dto = new ClientDTO(client);
+            return dto;
+
+        }
+
+
     @Transactional(readOnly = true)
     public Page<ClientDTO> findAll(Pageable pageable) {
         Page<Client> result = repository.findAll(pageable);
@@ -38,16 +47,24 @@ public class ClientService {
     }
     @Transactional
     public ClientDTO update(Long id, ClientDTO dto) {
-        Client entity = repository.getReferenceById(id);
-        copyDtoToEntity(dto,entity);
-        entity = repository.save(entity);
-        return new ClientDTO(entity);
-
+        try {
+            Client entity = repository.getReferenceById(id);
+            copyDtoToEntity(dto,entity);
+            entity = repository.save(entity);
+            return new ClientDTO(entity);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResouceNotFounException("Id não encontrado");
+        }
     }
     @Transactional
     public void delete(Long id){
-        repository.deleteById(id);
-
+        try {
+            repository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e){
+            throw new ResouceNotFounException("impossivel deletar");
+        }
     }
 
     private void copyDtoToEntity(ClientDTO dto, Client entity) {

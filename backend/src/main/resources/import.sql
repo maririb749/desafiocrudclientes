@@ -15,9 +15,9 @@ INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Carolin
 
 INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Roberta Carla', '000.111.999-87', 1800.00, '1987-01-03', 2);
 
-INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Sonia Aragão', '217.268.197-10', 2600.00, '1982-10-20', 3);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Sonia Aragão', '330.268.197-10', 2600.00, '1982-10-20', 3);
 
-INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Paula Correia', '217.268.197-10', 7600.00, '1982-10-20', 6);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Paula Correia', '217.000.197-11', 7600.00, '1984-05-03', 6);
 
 
 
